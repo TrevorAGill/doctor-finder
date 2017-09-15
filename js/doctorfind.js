@@ -37,7 +37,10 @@ export let doctorFind = {
 
   parseDocArray(arrayOfDocs) {
     let simpleDocArray = [];
-    arrayOfDocs.forEach((doctorArray) => {
+    console.log(arrayOfDocs);
+    let withPractices = arrayOfDocs.filter((doctorArray) => doctorArray.practices.length > 0);
+    console.log(withPractices);
+    withPractices.forEach((doctorArray) => {
       let newDoc = {
         firstName: doctorArray.profile.first_name,
         lastName: doctorArray.profile.last_name,
