@@ -1,25 +1,34 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <link rel="stylesheet" href="build/css/vendor.css">
-    <script src="build/js/vendor.min.js"></script>
-    <script type="text/javascript" src="build/js/app.js"></script>
-    <title>Template</title>
-  </head>
-  <body>
+
+<head>
+  <link rel="stylesheet" href="build/css/vendor.css">
+  <script src="build/js/vendor.min.js"></script>
+  <script type="text/javascript" src="build/js/app.js"></script>
+  <title>Template</title>
+</head>
+
+<body>
+  <div class="container">
     <h1>Test</h1>
     <form id="findDoctors">
-      <div class = "form-group">
-          <label for="medicalIssue">Medical Issue: </label>
-          <input id="medicalIssue" type="text" value="trouble breathing">
-        </div>
-        <div class = "form-group">
-          <label for="doctor">Doctor: </label>
-          <input id="doctor" type="text" value="trek">
-        </div>
-        <div class = "form-group">
-          <label for="zipcode">Zipcode:</label>
-          <input id="zipcode" type="number" value="97206">
-        </div>
-  </body>
+      <div class="form-group">
+        <label for="medicalIssue">Medical Issue: </label>
+        <input id="medicalIssue" type="text" value="trouble breathing">
+      </div>
+      <div class="form-group">
+        <label for="doctor">Doctor: </label>
+        <input id="doctor" type="text" value="trek">
+      </div>
+      <div class="form-group">
+        <label for="zipcode">Zipcode:</label>
+        <input id="zipcode" type="number" value="97206">
+      </div>
+      <button type="submit" class="btn">Find Doctors</button>
+    </form>
+    <div class="results">
+    </div>
+  </div>
+</body>
+
 </html>

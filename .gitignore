@@ -61,3 +61,7 @@ tmp/
 # bower #
 ###########
 bower_components/
+
+# API #
+###########
+ .env
