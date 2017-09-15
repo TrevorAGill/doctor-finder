@@ -1,12 +1,5 @@
 var apiKey = require('./../.env').apiKey;
 export let doctorFind = {
-  constructURL: function(zipcode, doctorName, issue) {
-    if (zipcode) {
-      var coordinates = this.convertZipcodeToCoordinates(zipcode);
-      console.log("this is value of var coordinates: " + coordinates)
-      return `https://api.betterdoctor.com/2016-03-01/doctors?name=${doctorName}&location=${coordinates}%2C100&user_location=${coordinates}&skip=0&limit=30&user_key=${apiKey}`;
-    };
-  },
 
   retrieveDocInfo: function(doctorName, issue, fn) {
     $.ajax({
@@ -37,7 +30,7 @@ export let doctorFind = {
   },
 
   evaluateIfNoResults(arrayOfDocs) {
-    if(arrayOfDocs.length === 0){
+    if (arrayOfDocs.length === 0) {
       alert("No doctors match your search query");
     }
   },
@@ -75,7 +68,6 @@ export let doctorFind = {
       };
       simpleDocArray.push(newDoc);
     })
-    console.log(simpleDocArray);
     return simpleDocArray;
   }
 }
