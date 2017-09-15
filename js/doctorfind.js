@@ -1,6 +1,5 @@
 var apiKey = require('./../.env').apiKey;
 export let doctorFind = {
-
   constructURL: function(zipcode, doctorName, issue) {
     if (zipcode) {
       var coordinates = this.convertZipcodeToCoordinates(zipcode);
@@ -18,7 +17,8 @@ export let doctorFind = {
       type: 'GET',
       success: (response) => {
         let arrayOfDocs = response.data;
-        let simpleDocArray = this.parseDocArray(arrayOfDocs);
+        let cleanArray = this.cleanUpArrayData(arrayOfDocs);
+        let simpleDocArray = this.parseDocArray(cleanArray);
         fn(simpleDocArray);
       },
       error: function(jqXHR, textStatus, errorThrown) {
@@ -35,12 +35,29 @@ export let doctorFind = {
     });
   },
 
-  parseDocArray(arrayOfDocs) {
-    let simpleDocArray = [];
-    console.log(arrayOfDocs);
+  cleanUpArrayData(arrayOfDocs) {
     let withPractices = arrayOfDocs.filter((doctorArray) => doctorArray.practices.length > 0);
-    console.log(withPractices);
     withPractices.forEach((doctorArray) => {
+      if (doctorArray.practices[0].phones[0].number.length === 10) {
+        let x = doctorArray.practices[0].phones[0].number;
+        doctorArray.practices[0].phones[0].number =
+          x.slice(0, 3) + '-' + x.slice(3, 6) + '-' + x.slice(6);
+      };
+      if (doctorArray.practices[0].accepts_new_patients) {
+        doctorArray.practices[0].accepts_new_patients = "yes";
+      } else {
+        doctorArray.practices[0].accepts_new_patients = "no";
+      };
+      if (!doctorArray.practices[0].website) {
+        doctorArray.practices[0].website = "none listed";
+      };
+    });
+    return withPractices;
+  },
+
+  parseDocArray(cleanArray) {
+    let simpleDocArray = [];
+    cleanArray.forEach((doctorArray) => {
       let newDoc = {
         firstName: doctorArray.profile.first_name,
         lastName: doctorArray.profile.last_name,
@@ -54,13 +71,4 @@ export let doctorFind = {
     console.log(simpleDocArray);
     return simpleDocArray;
   }
-
 }
-// `https://api.betterdoctor.com/2016-03-01/doctors?name=${doctorName}&location=${coordinates}%2C100&user_location=${coordinates}&skip=0&limit=30&user_key=${apiKey}`
-
-
-//Example search by issue: https://api.betterdoctor.com/2016-03-01/doctors?query=acne&location=37.773%2C-122.413%2C100&user_location=37.773%2C-122.413&skip=0&limit=30&user_key=35a35736a1380d9ce9216e9c11e5e8e7
-
-//Example search by name: https://api.betterdoctor.com/2016-03-01/doctors?name=smith&query=&location=37.773%2C-122.413%2C100&user_location=37.773%2C-122.413&skip=0&limit=30&user_key=35a35736a1380d9ce9216e9c11e5e8e7
-
-//Example search by both (either one can be blank): https://api.betterdoctor.com/2016-03-01/doctors?name=smith&query=acne&location=37.773%2C-122.413%2C100&user_location=37.773%2C-122.413&skip=0&limit=30&user_key=35a35736a1380d9ce9216e9c11e5e8e7
