@@ -17,6 +17,7 @@ export let doctorFind = {
       type: 'GET',
       success: (response) => {
         let arrayOfDocs = response.data;
+        this.evaluateIfNoResults(arrayOfDocs);
         let cleanArray = this.cleanUpArrayData(arrayOfDocs);
         let simpleDocArray = this.parseDocArray(cleanArray);
         fn(simpleDocArray);
@@ -33,6 +34,12 @@ export let doctorFind = {
         console.log(errorThrown);
       }
     });
+  },
+
+  evaluateIfNoResults(arrayOfDocs) {
+    if(arrayOfDocs.length === 0){
+      alert("No doctors match your search query");
+    }
   },
 
   cleanUpArrayData(arrayOfDocs) {

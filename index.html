@@ -3,6 +3,7 @@
 
 <head>
   <link rel="stylesheet" href="build/css/vendor.css">
+  <link rel="stylesheet" href="css/custom.css">
   <script src="build/js/vendor.min.js"></script>
   <script type="text/javascript" src="build/js/app.js"></script>
   <title>Template</title>
@@ -10,7 +11,9 @@
 
 <body>
   <div class="container">
-    <h1>Test</h1>
+    <div class="panel panel-default topPanel">
+    <div class="panel-heading"><strong>Find a Doctor</strong></div>
+    <div class="panel-body">
     <form id="findDoctors">
       <div class="form-group">
         <label for="medicalIssue">Medical Issue: </label>
@@ -20,14 +23,11 @@
         <label for="doctor">Doctor: </label>
         <input id="doctor" type="text" value="trek">
       </div>
-      <div class="form-group">
-        <label for="zipcode">Zipcode:</label>
-        <input id="zipcode" type="number" value="97206">
-      </div>
       <button type="submit" class="btn">Find Doctors</button>
     </form>
-    <div class="results">
-    </div>
+  </div>
+  </div>
+  <div class="results">
   </div>
 </body>
 
