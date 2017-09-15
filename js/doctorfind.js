@@ -9,16 +9,17 @@ export let doctorFind = {
     };
   },
 
-  retrieveDocInfo: function(coordinates, doctorName, issue) {
-    debugger;
-    return $.ajax({
-      url: `https://api.betterdoctor.com/2016-03-01/doctors?name=${doctorName}&query=${issue}&location=${coordinates}%2C100&user_location=${coordinates}&skip=0&limit=30&user_key=35a35736a1380d9ce9216e9c11e5e8e7`,
+  retrieveDocInfo: function(doctorName, issue, fn) {
+    $.ajax({
+      url: `https://api.betterdoctor.com/2016-03-01/doctors?name=${doctorName}&query=${issue}&skip=0&limit=30&user_key=35a35736a1380d9ce9216e9c11e5e8e7`,
       data: {
         format: 'json'
       },
       type: 'GET',
       success: (response) => {
-        console.log(response);
+        let arrayOfDocs = response.data;
+        let simpleDocArray = this.parseDocArray(arrayOfDocs);
+        fn(simpleDocArray);
       },
       error: function(jqXHR, textStatus, errorThrown) {
         alert('An error occurred... Look at the console (F12 or Ctrl+Shift+I, Console tab) for more information!');
@@ -34,35 +35,21 @@ export let doctorFind = {
     });
   },
 
-  getCoordinates: function(zipcode) {
-    let that = this;
-    return $.ajax({
-      url: `https://www.zipcodeapi.com/rest/RGyJqQXCXtjSKnruBpzUnk10j1pmAWRrDqa3h7GeBZ7mnyRYXqTlKVm4WLqwIiYl/info.json/${zipcode}/degrees`,
-      data: {
-        format: 'json'
-      },
-      type: 'GET',
-      success: (response, that) => {
-        return response.lat + '%2C' + response.lng;
-      },
-      error: function(jqXHR, textStatus, errorThrown) {
-        alert('An error occurred... Look at the console (F12 or Ctrl+Shift+I, Console tab) for more information!');
-
-        $('#result').html('<p>status code: ' + jqXHR.status + '</p><p>errorThrown: ' + errorThrown + '</p><p>jqXHR.responseText:</p><div>' + jqXHR.responseText + '</div>');
-        console.log('jqXHR:');
-        console.log(jqXHR);
-        console.log('textStatus:');
-        console.log(textStatus);
-        console.log('errorThrown:');
-        console.log(errorThrown);
-      }
-    });
-  },
-
-  executePromises(zipcode, doctorName, issue) {
-    this.getCoordinates(zipcode).then(this.retrieveDocInfo(coordinates, doctorName, issue)).then((data) => {
-      console.log(data);
-    });
+  parseDocArray(arrayOfDocs) {
+    let simpleDocArray = [];
+    arrayOfDocs.forEach((doctorArray) => {
+      let newDoc = {
+        firstName: doctorArray.profile.first_name,
+        lastName: doctorArray.profile.last_name,
+        address: doctorArray.practices[0].visit_address.street + ', ' + doctorArray.practices[0].visit_address.city + ', ' + doctorArray.practices[0].visit_address.state,
+        phone: doctorArray.practices[0].phones[0].number,
+        website: doctorArray.practices[0].website,
+        acceptingNewPatients: doctorArray.practices[0].accepts_new_patients
+      };
+      simpleDocArray.push(newDoc);
+    })
+    console.log(simpleDocArray);
+    return simpleDocArray;
   }
 
 }

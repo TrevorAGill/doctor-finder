@@ -1,19 +1,21 @@
 var apiKey = require('./../.env').apiKey;
 import { doctorFind } from './../js/doctorfind.js';
 
-// import {DoctorFind} from './../js/doctorfind.js';
-// var DoctorFind = require('./../js/doctorfind.js').doctorFindModule;
-
-$(document).ready(function () {
-  $('#findDoctors').submit(function (event) {
+$(document).ready(function() {
+  $('#findDoctors').submit(function(event) {
     event.preventDefault();
-
     let zipcode = $('#zipcode').val();
     let doctorName = $('#doctor').val();
     let issue = $('#medicalIssue').val();
-    doctorFind.executePromises(zipcode, doctorName, issue);
-    // let url = doctorFind.convertZipcodeToCoordinates(zipcode,doctorName,issue);
-    // console.log(url);
+    doctorFind.retrieveDocInfo(doctorName, issue, (simpleDocArray) => {
+      simpleDocArray.forEach((doctor) => {
+        $(".results").append('<strong>Name: ' + doctor.firstName + ' ' + doctor.lastName + '</strong><br>');
+        $(".results").append('Address: ' + doctor.address + '<br>');
+        $(".results").append('Phone #: ' + doctor.phone + '<br>');
+        $(".results").append('Website: ' + doctor.website + '<br>');
+        $(".results").append('Accepting New Patients: ' + doctor.acceptingNewPatients + '<br><br>');
+      });
+    });
   });
 });
 
@@ -44,10 +46,10 @@ $(document).ready(function () {
 //    });
 //  }
 
- // Should display:
- //  first name
- //  last name
- //  address
- //  phone
- //  website
- //  accepting new patients?
+// Should display:
+//  first name
+//  last name
+//  address
+//  phone
+//  website
+//  accepting new patients?
