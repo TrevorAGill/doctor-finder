@@ -5,3 +5,10 @@
 .container {
   width: 40%;
 }
+
+body {
+  background: url('/images/daniel-frank-201417.jpg');
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+}
